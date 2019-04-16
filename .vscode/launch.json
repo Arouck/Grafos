@@ -4,13 +4,8 @@
             "type": "java",
             "name": "CodeLens (Launch) - Teste",
             "request": "launch",
-            "mainClass": "br.ufpa.grafos.teste.Teste"
-        },
-        {
-            "type": "java",
-            "name": "CodeLens (Launch) - Main",
-            "request": "launch",
-            "mainClass": "br.ufpa.grafos.teste.Main"
+            "mainClass": "br.ufpa.grafos.teste.Teste",
+            "projectName": "grafos"
         }
     ]
 }
