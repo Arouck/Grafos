@@ -11,12 +11,10 @@ public class Vertice {
 	private int numero;
 	private int grau;
     private List<Vertice> adjacentes;
-    private boolean visitado;
 	
 	public Vertice(int i) {
 		this.numero = i;
         this.grau = 0;
-        this.visitado = false;
 		this.adjacentes = new ArrayList<Vertice>();
 	}
 	
@@ -61,14 +59,6 @@ public class Vertice {
 	}
 	public void setF(int f) {
 		this.f = f;
-    }
-    
-    public void setVisitado(boolean visitado) {
-        this.visitado = visitado;
-    }
-
-    public boolean getVisitado() {
-        return visitado;
     }
 	
 }

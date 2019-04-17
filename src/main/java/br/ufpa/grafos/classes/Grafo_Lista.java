@@ -1,6 +1,7 @@
 package br.ufpa.grafos.classes;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class Grafo_Lista {
@@ -78,34 +79,34 @@ public class Grafo_Lista {
 		vertice.setCor("Cinza");
 		tempo += 1;
         vertice.setD(tempo);
-        msg += " " + vertice.getNumero();
-		for(Vertice verticeADJ : vertice.getAdjacentes()) {
-			if(verticeADJ.getCor().equals("Branco")) {
-				verticeADJ.setAnterior(vertice);
-				DFS_Visit(verticeADJ, msg);
+		msg += vertice.getNumero() + " ";
+		
+		Iterator<Vertice> verticeAdj = vertice.getAdjacentes().listIterator();
+		while(verticeAdj.hasNext()) {
+			Vertice verticeAux = verticeAdj.next();
+			if(vertices.get(verticeAux.getNumero() - 1).getCor().equals("Branco")) {
+				verticeAux.setAnterior(vertice);
+				msg = DFS_Visit(verticeAux, msg);
 			}
 		}
 		vertice.setCor("Preto");
 		tempo += 1;
         vertice.setF(tempo);
-        
-        return msg;
+		return msg;
 	}
 	
 	public void DFS() {
-        String msg = "";
-		for(int i = 0; i < numeroVertices; i++) {
-			vertices.get(i).setCor("Branco");
-			vertices.get(i).setAnterior(null);
-		}
-		tempo = 0;
-		for(int i = 0; i < numeroVertices; i++) {
-			if(vertices.get(i).getCor().equals("Branco")) {
-				msg += DFS_Visit(vertices.get(i), msg);
+		String msg = "";
+		if(this.isConexo().equals("O grafo é conexo!")) {
+			for(int i = 0; i < numeroVertices; i++) {
+				vertices.get(i).setCor("Branco");
+				vertices.get(i).setAnterior(null);
 			}
-        }
-        
-        System.out.println(msg);
+			tempo = 0;
+			System.out.println(DFS_Visit(vertices.get(0), msg));
+		} else {
+			System.out.println("Não é possível executar o DFS para esse grafo, pois ele não é conexo!");
+		}
 	}
 	
 	public String hasPercursoAbertoEuler() {

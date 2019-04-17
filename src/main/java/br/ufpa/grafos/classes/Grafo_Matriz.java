@@ -8,6 +8,56 @@ public class Grafo_Matriz {
 	private int numeroVertices;
 	private int numeroArestas;
 	private byte[][] grafo;
+	private String[] cor;
+	private int[] d;
+	private int tempo;
+	private int[] f;
+	private Integer[] anterior;
+
+	public String DFS_Visit(int i, String msg) {
+		cor[i] = "Cinza";
+		tempo += 1;
+		d[i] = tempo;
+		msg += (i + 1) + " ";
+
+		List<Integer> adj = new ArrayList<>();
+
+		for(int j = 0; j < numeroVertices; j++) {
+			if(grafo[i][j] == 1) {
+				adj.add(j);
+			}
+		}
+		
+		if(!adj.isEmpty()) {
+			for(int j = 0; j < adj.size(); j++) {
+				int vertice = adj.get(j);
+				if(cor[vertice].equals("Branco")) {
+					anterior[vertice] = i;
+					msg = DFS_Visit(vertice, msg);
+				}
+			}
+		}
+
+		cor[i] = "Preto";
+		tempo += 1;
+		f[i] = tempo;
+		return msg;
+	}
+
+	public void DFS() {
+		String msg = "";
+		if(this.isConexo().equals("O grafo é conexo!")) {
+			for(int i = 0; i < numeroVertices; i++) {
+				cor[i] = "Branco";
+				anterior[i] = null;
+			}
+
+			tempo = 0;
+			System.out.println(DFS_Visit(0, msg));
+		} else {
+			System.out.println("Não é possível executar o DFS para esse grafo, pois ele não é conexo!");
+		}
+	}
 	
 	public void adicionarVertice() {
 		numeroVertices += 1;
@@ -26,6 +76,11 @@ public class Grafo_Matriz {
 				}
 			}
 		}
+
+		cor = new String[numeroVertices];
+		d = new int[numeroVertices];
+		f = new int[numeroVertices];
+		anterior = new Integer[numeroVertices];
 		
 		setGrafo(novoGrafo);
     }
@@ -85,6 +140,11 @@ public class Grafo_Matriz {
 	public Grafo_Matriz(int numeroVertices) {
 		this.numeroVertices = numeroVertices;
 		grafo = new byte[numeroVertices][numeroVertices];
+		cor = new String[numeroVertices];
+		d = new int[numeroVertices];
+		f = new int[numeroVertices];
+		anterior = new Integer[numeroVertices];
+		this.tempo = 0;
 		
 		for(int i = 0; i < numeroVertices; i++) {
 			for(int j = 0; j < numeroVertices; j++) {
@@ -95,7 +155,7 @@ public class Grafo_Matriz {
 		numeroArestas = 0;
 	}
 	
-	public void adicionarAresta(int vertice_1, int vertice_2) {
+	public void adicionarAresta(Integer vertice_1, Integer vertice_2) {
 		vertice_1 -= 1;
 		vertice_2 -= 1;
 		grafo[vertice_1][vertice_2] = 1;
@@ -161,6 +221,46 @@ public class Grafo_Matriz {
 
 	public void setGrafo(byte[][] grafo) {
 		this.grafo = grafo;
+	}
+
+	public int[] getD() {
+		return d;
+	}
+
+	public void setD(int[] d) {
+		this.d = d;
+	}
+
+	public int[] getF() {
+		return f;
+	}
+
+	public void setF(int[] f) {
+		this.f = f;
+	}
+
+	public int getTempo() {
+		return tempo;
+	}
+
+	public void setTempo(int tempo) {
+		this.tempo = tempo;
+	}
+
+	public Integer[] getAnterior() {
+		return anterior;
+	}
+
+	public void setAnterior(Integer[] anterior) {
+		this.anterior = anterior;
+	}
+
+	public String[] getCor() {
+		return cor;
+	}
+
+	public void setCor(String[] cor) {
+		this.cor = cor;
 	}
 
 	@Override
