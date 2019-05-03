@@ -6,7 +6,7 @@ import br.ufpa.grafos.classes.Grafo_Matriz;
 public class Teste {
 
 	public static void main(String[] args) {
-		// Teste grafo - Lista
+		/*// Teste grafo - Lista
 		System.out.println("Teste grafo - Lista");
 		Grafo_Lista g = new Grafo_Lista(3);
 		
@@ -19,14 +19,14 @@ public class Teste {
 		System.out.println(g.hasPercursoAbertoEuler());
 
 		int[] maxGrau_index = g.maxGrau();
-        System.out.println("O vÃ©rtice com maior grau no grafo Ã© o vÃ©rtice: " + g.getVertices().get(maxGrau_index[1]).getNumero() + ", com grau igual a: " + maxGrau_index[0]);
+        System.out.println("O vértice com maior grau no grafo é o vértice: " + g.getVertices().get(maxGrau_index[1]).getNumero() + ", com grau igual a: " + maxGrau_index[0]);
         
-        System.out.println("Verificando se o grafo Ã© conexo!");
+        System.out.println("Verificando se o grafo é conexo!");
 		System.out.println(g.isConexo());
 		System.out.println("Algoritmo DFS:");
 		g.DFS();
 
-		System.out.println("\nAdicionando vÃ©rtice e aresta!\n");
+		System.out.println("\nAdicionando vértice e aresta!\n");
 
 		g.AdicionarVertice();
 		
@@ -38,8 +38,8 @@ public class Teste {
 		System.out.println(g.hasPercursoAbertoEuler());
 
 		maxGrau_index = g.maxGrau();
-		System.out.println("O vÃ©rtice com maior grau no grafo Ã© o vÃ©rtice: " + g.getVertices().get(maxGrau_index[1]).getNumero() + ", com grau igual a: " + maxGrau_index[0]);
-        System.out.println("Verificando se o grafo Ã© conexo!");
+		System.out.println("O vértice com maior grau no grafo é o vértice: " + g.getVertices().get(maxGrau_index[1]).getNumero() + ", com grau igual a: " + maxGrau_index[0]);
+        System.out.println("Verificando se o grafo é conexo!");
 		System.out.println(g.isConexo());
 		
 		System.out.println("Algoritmo DFS:");
@@ -60,13 +60,13 @@ public class Teste {
 		System.out.println(g2.hasPercursoAbertoEuler());
 
 		maxGrau_index = g2.maxGrau();
-        System.out.println("O vÃ©rtice com maior grau no grafo Ã© o vÃ©rtice: " + maxGrau_index[1] + ", com grau igual a: " + maxGrau_index[0]);
-        System.out.println("Verificando se o grafo Ã© conexo!");
+        System.out.println("O vértice com maior grau no grafo é o vértice: " + maxGrau_index[1] + ", com grau igual a: " + maxGrau_index[0]);
+        System.out.println("Verificando se o grafo é conexo!");
 		System.out.println(g2.isConexo());
 		System.out.println("\nAlgoritmo DFS:");
 		g2.DFS();
 
-		System.out.println("\nAdicionando vÃ©rtice e aresta!\n");
+		System.out.println("\nAdicionando vértice e aresta!\n");
 		
 		g2.adicionarVertice();
 		
@@ -78,13 +78,25 @@ public class Teste {
 		System.out.println(g2.hasPercursoAbertoEuler());
 
 		maxGrau_index = g2.maxGrau();
-        System.out.println("O vÃ©rtice com maior grau no grafo Ã© o vÃ©rtice: " + maxGrau_index[1] + ", com grau igual a: " + maxGrau_index[0]);
-        System.out.println("Verificando se o grafo Ã© conexo!");
+        System.out.println("O vértice com maior grau no grafo é o vértice: " + maxGrau_index[1] + ", com grau igual a: " + maxGrau_index[0]);
+        System.out.println("Verificando se o grafo é conexo!");
 		System.out.println(g2.isConexo());
 
 		System.out.println("\nAlgoritmo DFS:");
-		g2.DFS();
-
+		g2.DFS();*/
+		
+		Grafo_Matriz grafoMatriz = new Grafo_Matriz(4);
+		
+		grafoMatriz.adicionarAresta(1, 2);
+		grafoMatriz.adicionarAresta(1, 3);
+		grafoMatriz.adicionarAresta(2, 3);
+		grafoMatriz.adicionarAresta(4, 4);
+		
+		grafoMatriz.ComponentesConectados();
+		
+		for(Integer i : grafoMatriz.getId()) {
+			System.out.print(i + " ");
+		}
 	}
 
 }

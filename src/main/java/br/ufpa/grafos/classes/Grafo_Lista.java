@@ -2,16 +2,83 @@ package br.ufpa.grafos.classes;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 public class Grafo_Lista {
-    private int tempo;
+	private Integer contador;
+    private Integer tempo;
 	private List<Vertice> vertices;
-	private int numeroVertices;
-    private int numeroArestas;
+	private Integer numeroVertices;
+    private Integer numeroArestas;
+    
+    public Grafo_Lista(Integer numeroVertices) {
+
+		this.numeroVertices = numeroVertices;
+		vertices = new ArrayList<Vertice>();
+		
+		for (Integer i = 0; i < numeroVertices; i++) {
+			Vertice vertice = new Vertice(i + 1);
+			vertices.add(vertice);
+		}
+
+		this.numeroArestas = 0;
+	}
+    
+    public void ComponentesConectados() {
+    	for(Integer s = 0; s < numeroVertices; s++) {
+    		Vertice vertice = vertices.get(s);
+    		if(!vertice.getMarcado()) {
+    			DFS(vertice.getNumero());
+    			contador++;
+    		}
+    	}
+    }
+    
+    public void DFS(Integer numeroFonte) {
+    	Vertice fonte = vertices.get(numeroFonte - 1);
+    	
+    	fonte.setMarcado(true);
+    	fonte.setId(contador);
+    	
+    	for(Vertice vertice : fonte.getAdjacentes()) {
+    		if(!vertice.getMarcado()) {
+    			DFS(vertice.getNumero());
+    		}
+    	}
+    }
+    
+    public void BFS(Integer numeroFonte) {
+    	boolean visitado[] = new boolean[numeroVertices];
+    	
+    	Vertice fonte = vertices.get(numeroFonte - 1);
+    	
+    	LinkedList<Vertice> fila = new LinkedList<Vertice>();
+    	
+    	visitado[fonte.getNumero() - 1] = true;
+    	fila.add(fonte);
+    	
+    	while(!fila.isEmpty()) {
+    		fonte = fila.poll();
+    		
+    		System.out.print(fonte.getNumero() + " ");
+    		
+    		Iterator<Vertice> filaADJ = fonte.getAdjacentes().listIterator();
+    		
+    		while(filaADJ.hasNext()) {
+    			Vertice vertice = filaADJ.next();
+    			
+    			if(!visitado[vertice.getNumero() - 1]) {
+    				visitado[vertice.getNumero() - 1] = true;
+    				
+    				fila.add(vertice);
+    			}
+    		}
+    	}
+    }
     
     public String isConexo() {
-        int index = 0;
+        Integer index = 0;
         List<Vertice> conexao = new ArrayList<Vertice>();
         List<Vertice> fila = new ArrayList<Vertice>();
         conexao.add(vertices.get(0));
@@ -36,15 +103,15 @@ public class Grafo_Lista {
 
         for(Vertice vertice : vertices) {
             if(!conexao.contains(vertice)) {
-                return "O grafo n√£o √© conexo!";
+                return "O grafo n„o È conexo!";
             }
         }
 
-        return "O grafo √© conexo!";
+        return "O grafo È conexo!";
     }
 
-	public int[] maxGrau() {
-		int[] maxGrau_index = {0, 0};
+	public Integer[] maxGrau() {
+		Integer[] maxGrau_index = {0, 0};
 		for(Vertice vertice : vertices) {
 			if(maxGrau_index[0] < vertice.getGrau()) {
 				maxGrau_index[0] = vertice.getGrau();
@@ -60,19 +127,6 @@ public class Grafo_Lista {
 		Vertice vertice = new Vertice(numeroVertices);
 		
 		vertices.add(vertice);
-	}
-
-	public Grafo_Lista(int numeroVertices) {
-
-		this.numeroVertices = numeroVertices;
-		vertices = new ArrayList<Vertice>();
-		
-		for (int i = 0; i < numeroVertices; i++) {
-			Vertice vertice = new Vertice(i + 1);
-			vertices.add(vertice);
-		}
-
-		this.numeroArestas = 0;
 	}
 	
 	public String DFS_Visit(Vertice vertice, String msg) {
@@ -97,20 +151,20 @@ public class Grafo_Lista {
 	
 	public void DFS() {
 		String msg = "";
-		if(this.isConexo().equals("O grafo √© conexo!")) {
-			for(int i = 0; i < numeroVertices; i++) {
+		if(this.isConexo().equals("O grafo È conexo!")) {
+			for(Integer i = 0; i < numeroVertices; i++) {
 				vertices.get(i).setCor("Branco");
 				vertices.get(i).setAnterior(null);
 			}
 			tempo = 0;
 			System.out.println(DFS_Visit(vertices.get(0), msg));
 		} else {
-			System.out.println("N√£o √© poss√≠vel executar o DFS para esse grafo, pois ele n√£o √© conexo!");
+			System.out.println("N„o È possÌvel executar o DFS para esse grafo, pois ele n„o È conexo!");
 		}
 	}
 	
 	public String hasPercursoAbertoEuler() {
-		int vertices_grau_impar = 0;
+		Integer vertices_grau_impar = 0;
 		
 		for(Vertice vertice : vertices) {
 			if(vertice.getGrau()%2 != 0) {
@@ -121,21 +175,21 @@ public class Grafo_Lista {
 		if(vertices_grau_impar == 2) {
 			return "O grafo tem um percurso aberto de Euler!";
 		} else {
-			return "O grafo n√£o tem um percurso aberto de Euler!";
+			return "O grafo n„o tem um percurso aberto de Euler!";
 		}
 	}
 	
 	public String isEuleriano() {
 		for(Vertice vertice : vertices) {
 			if(vertice.getGrau()%2 != 0) {
-				return "O grafo n√£o √© Euleriano!";
+				return "O grafo n„o È Euleriano!";
 			}
 		}
 		
-		return "O grafo √© Euleriano!";
+		return "O grafo È Euleriano!";
 	}
 
-	public void AdicionarAresta(int vertice_1, int vertice_2) {
+	public void AdicionarAresta(Integer vertice_1, Integer vertice_2) {
 		boolean encontrou = false;
 		
 		for(Vertice vertice_A : vertices) {
@@ -160,15 +214,15 @@ public class Grafo_Lista {
 		}
 
 		if(encontrou == false) {
-			System.out.println("N√£o foi poss√≠vel adicionar a aresta! V√©rtice n√£o encontrado.");
+			System.out.println("N„o foi possÌvel adicionar a aresta! VÈrtice n„o encontrado.");
 		}
 
 	}
 
 	@Override
 	public String toString() {
-		String msg = "Grafo {[V√©rtices = ";
-		int i;
+		String msg = "Grafo {[VÈrtices = ";
+		Integer i;
 		
 		for(i = 0; i < vertices.size(); i++) {
 			if (i == vertices.size() - 1) {
@@ -179,7 +233,7 @@ public class Grafo_Lista {
 		}
 		
 		i = 0;
-		int temp = 0;
+		Integer temp = 0;
 		for(Vertice vertice : vertices) {
 			temp = 0;
 			for(Vertice vertice_adjacente : vertice.getAdjacentes()) {
@@ -196,19 +250,19 @@ public class Grafo_Lista {
 		return msg;
 	}
 
-	public int getNumeroVertices() {
+	public Integer getNumeroVertices() {
 		return numeroVertices;
 	}
 
-	public void setNumeroVertices(int numeroVertices) {
+	public void setNumeroVertices(Integer numeroVertices) {
 		this.numeroVertices = numeroVertices;
 	}
 
-	public int getNumeroArestas() {
+	public Integer getNumeroArestas() {
 		return numeroArestas;
 	}
 
-	public void setNumeroArestas(int numeroArestas) {
+	public void setNumeroArestas(Integer numeroArestas) {
 		this.numeroArestas = numeroArestas;
 	}
 
@@ -220,11 +274,19 @@ public class Grafo_Lista {
 		this.vertices = vertices;
 	}
 
-	public int getTempo() {
+	public Integer getTempo() {
 		return tempo;
 	}
 
-	public void setTempo(int tempo) {
+	public void setTempo(Integer tempo) {
 		this.tempo = tempo;
+	}
+
+	public Integer getContador() {
+		return contador;
+	}
+
+	public void setContador(Integer contador) {
+		this.contador = contador;
 	}
 }
