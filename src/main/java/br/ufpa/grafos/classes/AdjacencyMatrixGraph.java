@@ -5,7 +5,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-public class Grafo_Matriz {
+/*
+ * This class represents a graph using a adjacency matrix.
+ * */
+public class AdjacencyMatrixGraph {
 
 	private Integer numeroVertices;
 	private Integer numeroArestas;
@@ -110,7 +113,7 @@ public class Grafo_Matriz {
 
 	public void DFS() {
 		String msg = "";
-		if(this.isConexo().equals("O grafo é conexo!")) {
+		if(this.isConexo().equals("O grafo Ã© conexo!")) {
 			for(Integer i = 0; i < numeroVertices; i++) {
 				cor[i] = "Branco";
 				anterior[i] = null;
@@ -119,7 +122,7 @@ public class Grafo_Matriz {
 			tempo = 0;
 			System.out.println(DFS_Visit(0, msg));
 		} else {
-			System.out.println("Não é possÃ­vel executar o DFS para esse grafo, pois ele não é conexo!");
+			System.out.println("NÃ©o Ã© possÃ­vel executar o DFS para esse grafo, pois ele nÃ©o Ã© conexo!");
 		}
 	}
 	
@@ -175,11 +178,11 @@ public class Grafo_Matriz {
 
         for(Integer i = 0; i < numeroVertices; i++) {
             if(!conexao.contains(i)) {
-                return "O grafo não é conexo!" + i;
+                return "O grafo nÃ©o Ã© conexo!" + i;
             }
         }
 
-        return "O grafo é conexo!";
+        return "O grafo Ã© conexo!";
     }
 
 	public Integer[] maxGrau() {
@@ -201,7 +204,7 @@ public class Grafo_Matriz {
 		return maxGrau_index;
 	}
 	
-	public Grafo_Matriz(Integer numeroVertices) {
+	public AdjacencyMatrixGraph(Integer numeroVertices) {
 		this.numeroVertices = numeroVertices;
 		grafo = new Byte[numeroVertices][numeroVertices];
 		cor = new String[numeroVertices];
@@ -236,10 +239,10 @@ public class Grafo_Matriz {
 				}
 			}
 			if(grau%2 != 0) {
-				return "O grafo não é Euleriano!";
+				return "O grafo nÃ©o Ã© Euleriano!";
 			}
 		}
-		return "O grafo é Euleriano!";
+		return "O grafo Ã© Euleriano!";
 	}
 	
 	public String hasPercursoAbertoEuler() {
@@ -260,7 +263,7 @@ public class Grafo_Matriz {
 		if(numeroVerticesGrauImpar == 2) {
 			return "O grafo tem um percurso aberto de Euler!";
 		} else {
-			return "O grafo não tem um percurso aberto de Euler!";
+			return "O grafo nÃ©o tem um percurso aberto de Euler!";
 		}
 	}
 	
