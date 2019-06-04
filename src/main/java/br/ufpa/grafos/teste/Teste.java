@@ -1,14 +1,17 @@
 package br.ufpa.grafos.teste;
 
-/*import br.ufpa.grafos.classes.ListNonOrientedGraph;
-import br.ufpa.grafos.classes.GrafoMatrizNaoDirecionado;*/
+//import br.ufpa.grafos.classes.AdjacencyListGraph;
+import br.ufpa.grafos.classes.AdjacencyMatrixGraph;
+
+/*import br.ufpa.grafos.classes.AdjacencyListGraph;
+import br.ufpa.grafos.classes.AdjacencyMatrixGraph;*/
 
 public class Teste {
 
 	public static void main(String[] args) {
 		// Teste grafo - Lista
 		/*System.out.println("Teste grafo - Lista");
-		ListNonOrientedGraph graph = new ListNonOrientedGraph(3);
+		AdjacencyListGraph graph = new AdjacencyListGraph(3);
 		
 		graph.addEdge(1, 2);
 		graph.addEdge(2, 3);
@@ -19,7 +22,7 @@ public class Teste {
 		System.out.println(graph.hasEulerianPath());
 
 		Integer[] maxGrau_index = graph.maximumDegree();
-        System.out.println("O vértice com maior grau no grafo é o vértice: " + graph.getVertices().get(maxGrau_index[1]).getNumero() + ", com grau igual a: " + maxGrau_index[0]);
+        System.out.println("O vértice com maior grau no grafo é o vértice: " + graph.getVertices().get(maxGrau_index[1]).getNumber() + ", com grau igual a: " + maxGrau_index[0]);
         
         System.out.println("Verificando se o grafo é conexo!");
 		System.out.println(graph.isConnected());
@@ -38,7 +41,7 @@ public class Teste {
 		System.out.println(graph.hasEulerianPath());
 
 		maxGrau_index = graph.maximumDegree();
-		System.out.println("O vértice com maior grau no grafo é o vértice: " + graph.getVertices().get(maxGrau_index[1]).getNumero() + ", com grau igual a: " + maxGrau_index[0]);
+		System.out.println("O vértice com maior grau no grafo é o vértice: " + graph.getVertices().get(maxGrau_index[1]).getNumber() + ", com grau igual a: " + maxGrau_index[0]);
         System.out.println("Verificando se o grafo é conexo!");
 		System.out.println(graph.isConnected());
 		
@@ -49,7 +52,7 @@ public class Teste {
 		
 		System.out.println("\n");
 		System.out.println("Teste grafo - Matriz");
-		GrafoMatrizNaoDirecionado g2 = new GrafoMatrizNaoDirecionado(3);
+		AdjacencyMatrixGraph g2 = new AdjacencyMatrixGraph(3);
 		
 		g2.adicionarAresta(1, 2);
 		g2.adicionarAresta(2, 3);
@@ -85,7 +88,7 @@ public class Teste {
 		System.out.println("\nAlgoritmo DFS:");
 		g2.DFS();
 		
-		GrafoMatrizNaoDirecionado grafoMatriz = new GrafoMatrizNaoDirecionado(4);
+		AdjacencyMatrixGraph grafoMatriz = new AdjacencyMatrixGraph(4);
 		
 		grafoMatriz.adicionarAresta(1, 2);
 		grafoMatriz.adicionarAresta(1, 3);
@@ -97,6 +100,15 @@ public class Teste {
 		for(Integer i : grafoMatriz.getId()) {
 			System.out.print(i + " ");
 		}*/
+		
+		AdjacencyMatrixGraph g = new AdjacencyMatrixGraph(4);
+		g.adicionarAresta(1, 2);
+		g.adicionarAresta(2, 1);
+		g.adicionarAresta(2, 3);
+		g.adicionarAresta(3, 4);
+		g.warshall();
+		
+		System.out.println(g.toString());
 	}
 
 }

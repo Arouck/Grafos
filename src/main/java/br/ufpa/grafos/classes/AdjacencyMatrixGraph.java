@@ -13,6 +13,7 @@ public class AdjacencyMatrixGraph {
 	private Integer numeroVertices;
 	private Integer numeroArestas;
 	private Byte[][] grafo;
+	private Integer[][] valores;
 	private String[] cor;
 	private Integer[] d;
 	private Integer tempo;
@@ -21,6 +22,20 @@ public class AdjacencyMatrixGraph {
 	private Integer[] id;
 	private boolean[] marcado;
 	private Integer contador;
+	
+	public void warshall() {
+		for(int k = 0; k < numeroVertices; k++) {
+			for(int i = 0; i < numeroVertices; i++) {
+				for(int j = 0; j < numeroVertices; j++) {
+					if(grafo[i][j] != 1) {
+						if((grafo[i][k] == 1) && (grafo[k][j] == 1)) {
+							grafo[i][j] = 1;
+						}
+					}
+				}
+			}
+		}
+	}
 	
 	public void ComponentesConectados() {
 		marcado = new boolean[numeroVertices];
@@ -207,6 +222,7 @@ public class AdjacencyMatrixGraph {
 	public AdjacencyMatrixGraph(Integer numeroVertices) {
 		this.numeroVertices = numeroVertices;
 		grafo = new Byte[numeroVertices][numeroVertices];
+		valores = new Integer[numeroVertices][numeroVertices];
 		cor = new String[numeroVertices];
 		d = new Integer[numeroVertices];
 		f = new Integer[numeroVertices];
@@ -227,7 +243,15 @@ public class AdjacencyMatrixGraph {
 		vertice_1 -= 1;
 		vertice_2 -= 1;
 		grafo[vertice_1][vertice_2] = 1;
-		grafo[vertice_2][vertice_1] = 1;
+		//grafo[vertice_2][vertice_1] = 1;
+	}
+	
+	public void adicionarArestaValorada(Integer vertice_1, Integer vertice_2, Integer valor) {
+		vertice_1 -= 1;
+		vertice_2 -= 1;
+		grafo[vertice_1][vertice_2] = 1;
+		valores[vertice_1][vertice_2] = valor;
+		//grafo[vertice_2][vertice_1] = 1;
 	}
 
 	public String isEuleriano() {
@@ -353,6 +377,14 @@ public class AdjacencyMatrixGraph {
 
 	public void setContador(Integer contador) {
 		this.contador = contador;
+	}
+
+	public Integer[][] getValores() {
+		return valores;
+	}
+
+	public void setValores(Integer[][] valores) {
+		this.valores = valores;
 	}
 
 	@Override
