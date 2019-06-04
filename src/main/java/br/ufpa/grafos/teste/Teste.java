@@ -106,9 +106,15 @@ public class Teste {
 		g.adicionarAresta(2, 1);
 		g.adicionarAresta(2, 3);
 		g.adicionarAresta(3, 4);
-		g.warshall();
+		//g.warshall();
 		
 		System.out.println(g.toString());
+		
+		AdjacencyMatrixGraph g2 = new AdjacencyMatrixGraph(4);
+		
+		g.transposta(g.getGrafo(), g2.getGrafo());
+		
+		System.out.println(g2.toString());
 	}
 
 }
