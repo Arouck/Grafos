@@ -27,94 +27,136 @@ public class AdjacencyMatrixGraph {
 	private Integer[] grauEntrada;
 	private Integer[] grauSaida;
 	private LinkedList<Integer> adj[];
+	private Boolean controller;
+	private Byte[][] warshalG;
 
-	// A recursive function to print DFS starting from v 
-    public void DFSUtil2(int v,boolean visited[]) 
-    { 
-        // Mark the current node as visited and print it 
-        visited[v] = true; 
-        System.out.print(v + " "); 
-  
-        int n; 
-  
-        // Recur for all the vertices adjacent to this vertex 
-        Iterator<Integer> i =adj[v].iterator(); 
-        while (i.hasNext()) 
-        { 
-            n = i.next(); 
-            if (!visited[n]) 
-                DFSUtil2(n,visited); 
-        } 
-    } 
-  
-    public void fillOrder(int v, boolean visited[], Stack<Integer> stack) 
-    { 
-        // Mark the current node as visited and print it 
-        visited[v] = true; 
-  
-        // Recur for all the vertices adjacent to this vertex 
-        Iterator<Integer> i = adj[v].iterator(); 
-        while (i.hasNext()) 
-        { 
-            int n = i.next(); 
-            if(!visited[n]) 
-                fillOrder(n, visited, stack); 
-        } 
-  
-        // All vertices reachable from v are processed by now, 
-        // push v to Stack 
-        stack.push(new Integer(v)); 
-    } 
-  
-    // The main function that finds and prints all strongly 
-    // connected components 
-    public void printSCCs() 
-    { 
-        Stack<Integer> stack = new Stack<>(); 
-  
-        // Mark all the vertices as not visited (For first DFS) 
-        boolean visited[] = new boolean[numeroVertices]; 
-        for(int i = 0; i < numeroVertices; i++) 
-            visited[i] = false; 
-  
-        // Fill vertices in stack according to their finishing 
-        // times 
-        for (int i = 0; i < numeroVertices; i++) 
-            if (visited[i] == false) 
-                fillOrder(i, visited, stack); 
-  
-        // Create a reversed graph 
-        AdjacencyMatrixGraph gr = new AdjacencyMatrixGraph(this.numeroVertices);
-        
-        this.transposta(this.grafo, gr);
-  
-        // Mark all the vertices as not visited (For second DFS) 
-        for (int i = 0; i < numeroVertices; i++) 
-            visited[i] = false; 
-  
-        // Now process all vertices in order defined by Stack 
-        while (stack.empty() == false) 
-        { 
-            // Pop a vertex from stack 
-            int v = (int)stack.pop(); 
-  
-            // Print Strongly connected component of the popped vertex 
-            if (visited[v] == false) 
-            { 
-                gr.DFSUtil2(v, visited); 
-                System.out.println(); 
-            } 
-        } 
-    } 
-	
-	// A recursive function used by topologicalSort
+	public Integer minDistance(Integer distancia[], Boolean shortestPathTree[]) {
+		int min = Integer.MAX_VALUE;
+		int min_index = -1;
+
+		for (int v = 0; v < numeroVertices; v++)
+			if (shortestPathTree[v] == false && distancia[v] <= min) {
+				min = distancia[v];
+				min_index = v;
+			}
+
+		return min_index;
+	}
+
+	public void printSolution(Integer distancia[]) {
+
+		System.out.println("Vertex   Distance from Source");
+
+		for (int i = 0; i < numeroVertices; i++) {
+			int j = i + 1;
+			System.out.println(j + " \t\t " + distancia[i]);
+		}
+	}
+
+	public void dijkstra(int fonte) {
+
+		controller = true;
+
+		for (int i = 0; i < numeroVertices; i++) {
+			for (int j = 0; j < numeroVertices; j++) {
+				if (valores[i][j] < 0) {
+					controller = false;
+				}
+			}
+		}
+
+		if (controller == false) {
+			System.out.println("This graph has an negative edge!");
+		} else {
+			Integer distancia[] = new Integer[numeroVertices];
+
+			Boolean shortestPathTree[] = new Boolean[numeroVertices];
+
+			for (int i = 0; i < numeroVertices; i++) {
+				distancia[i] = Integer.MAX_VALUE;
+				shortestPathTree[i] = false;
+			}
+
+			distancia[fonte] = 0;
+
+			for (int count = 0; count < numeroVertices - 1; count++) {
+
+				Integer u = minDistance(distancia, shortestPathTree);
+
+				shortestPathTree[u] = true;
+
+				for (int v = 0; v < numeroVertices; v++) {
+					if (!shortestPathTree[v] && valores[u][v] != 0 && distancia[u] != Integer.MAX_VALUE
+							&& distancia[u] + valores[u][v] < distancia[v]) {
+						distancia[v] = distancia[u] + valores[u][v];
+					}
+				}
+			}
+
+			printSolution(distancia);
+		}
+	}
+
+	public void DFSUtil2(int v, boolean visited[]) {
+		visited[v] = true;
+		System.out.print(v + 1 + " ");
+
+		int n;
+
+		Iterator<Integer> i = adj[v].iterator();
+		while (i.hasNext()) {
+			n = i.next();
+			if (!visited[n])
+				DFSUtil2(n, visited);
+		}
+	}
+
+	public void fillOrder(int v, boolean visited[], Stack<Integer> stack) {
+		visited[v] = true;
+
+		Iterator<Integer> i = adj[v].iterator();
+		while (i.hasNext()) {
+			int n = i.next();
+			if (!visited[n])
+				fillOrder(n, visited, stack);
+		}
+
+		stack.push(new Integer(v));
+	}
+
+	public void printSCCs() {
+		Stack<Integer> stack = new Stack<>();
+
+		boolean visited[] = new boolean[numeroVertices];
+		for (int i = 0; i < numeroVertices; i++)
+			visited[i] = false;
+
+		for (int i = 0; i < numeroVertices; i++)
+			if (visited[i] == false)
+				fillOrder(i, visited, stack);
+
+		AdjacencyMatrixGraph gr = new AdjacencyMatrixGraph(this.numeroVertices);
+
+		this.transposta(this.grafo, gr);
+
+		for (int i = 0; i < numeroVertices; i++)
+			visited[i] = false;
+
+		while (stack.empty() == false) {
+			
+			int v = (int) stack.pop();
+
+			if (visited[v] == false) {
+				gr.DFSUtil2(v, visited);
+				System.out.println();
+			}
+		}
+	}
+
 	public void topologicalSortUtil(int v, boolean visited[], Stack<Integer> stack) {
-		// Mark the current node as visited.
 		visited[v] = true;
 		Integer i;
 
-		// Recur for all the vertices adjacent to this
-		// vertex
 		Iterator<Integer> it = adj[v].iterator();
 		while (it.hasNext()) {
 			i = it.next();
@@ -123,149 +165,67 @@ public class AdjacencyMatrixGraph {
 			}
 		}
 
-		// Push current vertex to stack which stores result
 		stack.push(new Integer(v));
 	}
 
-	// The function to do Topological Sort. It uses
-	// recursive topologicalSortUtil()
 	public void topologicalSort() {
 		Stack<Integer> stack = new Stack<>();
 
-		// Mark all the vertices as not visited
 		boolean visited[] = new boolean[numeroVertices];
 		for (int i = 0; i < numeroVertices; i++) {
 			visited[i] = false;
 		}
-		// Call the recursive helper function to store
-		// Topological Sort starting from all vertices
-		// one by one
+		
 		for (int i = 0; i < numeroVertices; i++) {
 			if (visited[i] == false) {
 				topologicalSortUtil(i, visited, stack);
 			}
 		}
-		// Print contents of stack
+		
 		while (stack.empty() == false) {
-			System.out.print(stack.pop() + " ");
+			System.out.print(stack.pop() + 1 + " ");
 		}
 	}
 
 	@SuppressWarnings("unchecked")
 	public void transposta(Byte[][] G, AdjacencyMatrixGraph Graph2) {
 		Byte[][] G2 = new Byte[numeroVertices][numeroVertices];
-		
+
 		for (int i = 0; i < numeroVertices; i++) {
 			for (int j = 0; j < numeroVertices; j++) {
 				G2[i][j] = G[j][i];
 			}
 		}
-		
+
 		LinkedList<Integer> adj2[];
-		
+
 		adj2 = new LinkedList[numeroVertices];
 
 		for (int i = 0; i < numeroVertices; i++) {
 			adj2[i] = new LinkedList<>();
 		}
-		
+
 		for (int i = 0; i < numeroVertices; i++) {
 			for (int j = 0; j < numeroVertices; j++) {
-				if(G2[i][j] == 1) {
+				if (G2[i][j] == 1) {
 					adj2[i].add(j);
 				}
 			}
 		}
-		
+
 		Graph2.setGrafo(G2);
 		Graph2.setAdj(adj2);
 	}
 
-	/*public List<Integer> topologicalSorting() {
-		DFS2();
-		for (int i = 0; i < numeroVertices; i++) {
-
-		}
-		return topologicalSort;
-	}
-
-	public Boolean DFS_Visit2(Integer i) {
-		cor[i] = "Cinza";
-		tempo += 1;
-		d[i] = tempo;
-
-		List<Integer> adj = new ArrayList<>();
-
-		for (Integer j = 0; j < numeroVertices; j++) {
-			if (grafo[i][j] == 1) {
-				adj.add(j);
-			}
-		}
-
-		if (!adj.isEmpty()) {
-			for (Integer j = 0; j < adj.size(); j++) {
-				Integer vertice = adj.get(j);
-				if (cor[vertice].equals("Branco")) {
-					anterior[vertice] = i;
-					DFS_Visit2(vertice);
-				} else {
-					System.out.println("This graph isn't a Directed Acyclic Graph!");
-					return false;
-				}
-			}
-		}
-
-		cor[i] = "Preto";
-		tempo += 1;
-		f[i] = tempo;
-		topologicalSort.add(i + 1);
-		return true;
-	}
-
-	public Boolean DFS2() {
-		Integer numeroFontes = 0;
-		Integer numeroSumidouros = 0;
-		Boolean result = true;
-
-		for (Integer i = 0; i < numeroVertices; i++) {
-			cor[i] = "Branco";
-			anterior[i] = null;
-
-			if (grauEntrada[i] == 0) {
-				numeroSumidouros++;
-			}
-
-			if (grauSaida[i] == 0) {
-				numeroFontes++;
-			}
-		}
-
-		if (numeroFontes >= 1 && numeroSumidouros >= 1) {
-			tempo = 0;
-			for (int i = 0; i < numeroVertices; i++) {
-				if (cor[i] == "Branco") {
-					if (!DFS_Visit2(i)) {
-						result = false;
-					}
-				}
-			}
-
-		} else {
-			System.out.println(
-					"This graph can't be a Directed Acyclic Graph! Because it doesn't have at least one font and one sink!");
-			result = false;
-		}
-
-		return result;
-	}*/
-
 	public void warshall() {
+		warshalG = grafo.clone();
+		
 		for (int k = 0; k < numeroVertices; k++) {
 			for (int i = 0; i < numeroVertices; i++) {
 				for (int j = 0; j < numeroVertices; j++) {
-					if (grafo[i][j] != 1) {
-						if ((grafo[i][k] == 1) && (grafo[k][j] == 1)) {
-							grafo[i][j] = 1;
+					if (warshalG[i][j] != 1) {
+						if ((warshalG[i][k] == 1) && (warshalG[k][j] == 1)) {
+							warshalG[i][j] = 1;
 						}
 					}
 				}
@@ -462,6 +422,7 @@ public class AdjacencyMatrixGraph {
 		this.numeroVertices = numeroVertices;
 		grafo = new Byte[numeroVertices][numeroVertices];
 		valores = new Integer[numeroVertices][numeroVertices];
+		warshalG = new Byte[numeroVertices][numeroVertices];
 		cor = new String[numeroVertices];
 		d = new Integer[numeroVertices];
 		f = new Integer[numeroVertices];
@@ -474,6 +435,8 @@ public class AdjacencyMatrixGraph {
 		for (Integer i = 0; i < numeroVertices; i++) {
 			for (Integer j = 0; j < numeroVertices; j++) {
 				grafo[i][j] = 0;
+				valores[i][j] = Integer.MAX_VALUE;
+				warshalG[i][j] = 0;
 			}
 			grauEntrada[i] = 0;
 			grauSaida[i] = 0;
@@ -520,10 +483,10 @@ public class AdjacencyMatrixGraph {
 				}
 			}
 			if (grau % 2 != 0) {
-				return "O grafo nÃ©o Ã© Euleriano!";
+				return "O grafo não é Euleriano!";
 			}
 		}
-		return "O grafo Ã© Euleriano!";
+		return "O grafo é Euleriano!";
 	}
 
 	public String hasPercursoAbertoEuler() {
@@ -668,6 +631,54 @@ public class AdjacencyMatrixGraph {
 
 		return msg;
 	}
+	
+	public String toStringValues() {
+		String msg = "Valores:\n  ";
+		for (Integer i = 0; i < numeroVertices; i++) {
+			if (i == numeroVertices - 1) {
+				msg += (i + 1) + "\n";
+			} else {
+				msg += (i + 1) + "  ";
+			}
+
+		}
+		for (Integer i = 0; i < numeroVertices; i++) {
+			msg += (i + 1) + "[";
+			for (Integer j = 0; j < numeroVertices; j++) {
+				if (j == numeroVertices - 1) {
+					msg += valores[i][j] + "]\n";
+				} else {
+					msg += valores[i][j] + ", ";
+				}
+			}
+		}
+
+		return msg;
+	}
+	
+	public String toStringWarshall() {
+		String msg = "Grafo:\n  ";
+		for (Integer i = 0; i < numeroVertices; i++) {
+			if (i == numeroVertices - 1) {
+				msg += (i + 1) + "\n";
+			} else {
+				msg += (i + 1) + "  ";
+			}
+
+		}
+		for (Integer i = 0; i < numeroVertices; i++) {
+			msg += (i + 1) + "[";
+			for (Integer j = 0; j < numeroVertices; j++) {
+				if (j == numeroVertices - 1) {
+					msg += warshalG[i][j] + "]\n";
+				} else {
+					msg += warshalG[i][j] + ", ";
+				}
+			}
+		}
+
+		return msg;
+	}
 
 	public List<Integer> getTopologicalSort() {
 		return topologicalSort;
@@ -699,6 +710,22 @@ public class AdjacencyMatrixGraph {
 
 	public void setAdj(LinkedList<Integer>[] adj) {
 		this.adj = adj;
+	}
+
+	public Boolean getController() {
+		return controller;
+	}
+
+	public void setController(Boolean controller) {
+		this.controller = controller;
+	}
+
+	public Byte[][] getWarshalG() {
+		return warshalG;
+	}
+
+	public void setWarshalG(Byte[][] warshalG) {
+		this.warshalG = warshalG;
 	}
 
 }

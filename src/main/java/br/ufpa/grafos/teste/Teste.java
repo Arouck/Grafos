@@ -1,5 +1,7 @@
 package br.ufpa.grafos.teste;
 
+import java.util.Scanner;
+
 //import br.ufpa.grafos.classes.AdjacencyListGraph;
 import br.ufpa.grafos.classes.AdjacencyMatrixGraph;
 
@@ -9,107 +11,97 @@ import br.ufpa.grafos.classes.AdjacencyMatrixGraph;*/
 public class Teste {
 
 	public static void main(String[] args) {
-		// Teste grafo - Lista
-		/*System.out.println("Teste grafo - Lista");
-		AdjacencyListGraph graph = new AdjacencyListGraph(3);
-		
-		graph.addEdge(1, 2);
-		graph.addEdge(2, 3);
-		graph.addEdge(3, 1);
-		
-		System.out.println(graph.toString());
-		System.out.println(graph.hasEulerianCircuit());
-		System.out.println(graph.hasEulerianPath());
+		System.out.println("INDIQUE O N⁄MERO DE V…RTICES DO GRAFO:\n");
+		Scanner input = new Scanner(System.in);
 
-		Integer[] maxGrau_index = graph.maximumDegree();
-        System.out.println("O v√©rtice com maior grau no grafo √© o v√©rtice: " + graph.getVertices().get(maxGrau_index[1]).getNumber() + ", com grau igual a: " + maxGrau_index[0]);
-        
-        System.out.println("Verificando se o grafo √© conexo!");
-		System.out.println(graph.isConnected());
-		System.out.println("Algoritmo DFS:");
-		graph.DFS();
+		Integer numeroDeVertices = input.nextInt();
 
-		System.out.println("\nAdicionando v√©rtice e aresta!\n");
+		System.out.println("\nCRIANDO O GRAFO...\n");
 
-		graph.addVertex();
-		
-		graph.addEdge(4, 2);
-		graph.addEdge(4, 3);
-		
-		System.out.println(graph.toString());
-		System.out.println(graph.hasEulerianCircuit());
-		System.out.println(graph.hasEulerianPath());
+		AdjacencyMatrixGraph grafo = new AdjacencyMatrixGraph(numeroDeVertices);
 
-		maxGrau_index = graph.maximumDegree();
-		System.out.println("O v√©rtice com maior grau no grafo √© o v√©rtice: " + graph.getVertices().get(maxGrau_index[1]).getNumber() + ", com grau igual a: " + maxGrau_index[0]);
-        System.out.println("Verificando se o grafo √© conexo!");
-		System.out.println(graph.isConnected());
-		
-		System.out.println("Algoritmo DFS:");
-		graph.DFS();
-        
-		//Teste grafo - Matriz
-		
-		System.out.println("\n");
-		System.out.println("Teste grafo - Matriz");
-		AdjacencyMatrixGraph g2 = new AdjacencyMatrixGraph(3);
-		
-		g2.adicionarAresta(1, 2);
-		g2.adicionarAresta(2, 3);
-		g2.adicionarAresta(3, 1);
+		System.out.println("GRAFO CRIADO COM SUCESSO...\n");
 
-		System.out.println(g2.toString());
-		System.out.println(g2.isEuleriano());
-		System.out.println(g2.hasPercursoAbertoEuler());
+		System.out.println("VOC  DESEJA ADICIONAR ARESTAS VALORADAS?\n1) SIM\n2) N√O\n");
 
-		maxGrau_index = g2.maxGrau();
-        System.out.println("O v√©rtice com maior grau no grafo √© o v√©rtice: " + maxGrau_index[1] + ", com grau igual a: " + maxGrau_index[0]);
-        System.out.println("Verificando se o grafo √© conexo!");
-		System.out.println(g2.isConexo());
-		System.out.println("\nAlgoritmo DFS:");
-		g2.DFS();
+		int arestasValoradas = input.nextInt();
 
-		System.out.println("\nAdicionando v√©rtice e aresta!\n");
-		
-		g2.adicionarVertice();
-		
-		g2.adicionarAresta(4, 2);
-		g2.adicionarAresta(4, 3);
-		
-		System.out.println(g2.toString());
-		System.out.println(g2.isEuleriano());
-		System.out.println(g2.hasPercursoAbertoEuler());
+		if (arestasValoradas == 1) {
+			boolean pararArestas = false;
+			System.out.println("INDIQUE A OS V…RTICES DAS ARESTAS, CASO TERMINE … S” DIGITAR 'n' NO FINAL.\n"
+					+ "LEMBRANDO QUE OS V…RTICES EST√O NUMERADOS DE 1 AT… " + numeroDeVertices);
 
-		maxGrau_index = g2.maxGrau();
-        System.out.println("O v√©rtice com maior grau no grafo √© o v√©rtice: " + maxGrau_index[1] + ", com grau igual a: " + maxGrau_index[0]);
-        System.out.println("Verificando se o grafo √© conexo!");
-		System.out.println(g2.isConexo());
+			while (!pararArestas) {
+				System.out.println("De ");
+				int de = input.nextInt();
+				System.out.println("Para ");
+				int para = input.nextInt();
+				System.out.print("Com o valor ");
+				int valor = input.nextInt();
+				System.out.println("ADICIONANDO ARESTA...");
+				grafo.adicionarArestaValorada(de, para, valor);
+				System.out.println("ARESTA ADICIONADA!");
+				System.out.println("DESEJA CONTINUAR?\ns ou n");
+				char resp = input.next().charAt(0);
 
-		System.out.println("\nAlgoritmo DFS:");
-		g2.DFS();
+				if (resp == 'n') {
+					pararArestas = true;
+				}
+			}
+		} else {
+			boolean pararArestas = false;
+			System.out.println("INDIQUE A OS V…RTICES DAS ARESTAS, CASO TERMINE … S” DIGITAR 'n' NO FINAL.\n"
+					+ "LEMBRANDO QUE OS V…RTICES EST√O NUMERADOS DE 1 AT… " + numeroDeVertices);
+
+			while (!pararArestas) {
+				System.out.println("De ");
+				int de = input.nextInt();
+				System.out.println("Para");
+				int para = input.nextInt();
+				System.out.println("ADICIONANDO ARESTA...");
+				grafo.adicionarAresta(de, para);
+				System.out.println("ARESTA ADICIONADA!");
+				System.out.println("DESEJA CONTINUAR?\ns ou n");
+				char resp = input.next().charAt(0);
+
+				if (resp == 'n') {
+					pararArestas = true;
+				}
+			}
+		}
 		
-		AdjacencyMatrixGraph grafoMatriz = new AdjacencyMatrixGraph(4);
 		
-		grafoMatriz.adicionarAresta(1, 2);
-		grafoMatriz.adicionarAresta(1, 3);
-		grafoMatriz.adicionarAresta(2, 3);
-		grafoMatriz.adicionarAresta(4, 4);
+		boolean parar = false;
 		
-		grafoMatriz.ComponentesConectados();
-		
-		for(Integer i : grafoMatriz.getId()) {
-			System.out.print(i + " ");
-		}*/
-		
-		AdjacencyMatrixGraph g = new AdjacencyMatrixGraph(5);
-		g.adicionarAresta(2, 1);
-		g.adicionarAresta(1, 3);
-		g.adicionarAresta(3, 2);
-		g.adicionarAresta(1, 4);
-		g.adicionarAresta(4, 5);
-		//g.warshall();
-		
-		g.printSCCs();
+		while(!parar) {
+			System.out.println("\n##################################################################");
+			System.out.println("1) WARSHALL\n2) ORDENA«√O TOPOL”GICA\n3) COMPONENTES FORTEMENTE CONECTADOS\n4) DIJKSTRA\n5) SAIR DO SISTEMA");
+			int opcao = input.nextInt();
+			switch (opcao) {
+			case 1:
+				grafo.warshall();
+				System.out.println(grafo.toStringWarshall());
+				break;
+			case 2:
+				grafo.topologicalSort();
+				break;
+			case 3:
+				grafo.printSCCs();
+				break;
+			case 4:
+				System.out.print("Indique a fonte: ");
+				int fonte = input.nextInt();
+				grafo.dijkstra(fonte);
+				break;
+			case 5:
+				parar = true;
+				System.out.println("SAINDO DO SISTEMA...");
+				input.close();
+				break;
+			default:
+				System.out.println("Essa n„o È uma opÁ„o v·lida!");
+				break;
+			}
+		}
 	}
-
 }
