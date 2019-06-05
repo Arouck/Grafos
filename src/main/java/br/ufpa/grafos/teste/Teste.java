@@ -101,20 +101,15 @@ public class Teste {
 			System.out.print(i + " ");
 		}*/
 		
-		AdjacencyMatrixGraph g = new AdjacencyMatrixGraph(4);
-		g.adicionarAresta(1, 2);
+		AdjacencyMatrixGraph g = new AdjacencyMatrixGraph(5);
 		g.adicionarAresta(2, 1);
-		g.adicionarAresta(2, 3);
-		g.adicionarAresta(3, 4);
+		g.adicionarAresta(1, 3);
+		g.adicionarAresta(3, 2);
+		g.adicionarAresta(1, 4);
+		g.adicionarAresta(4, 5);
 		//g.warshall();
 		
-		System.out.println(g.toString());
-		
-		AdjacencyMatrixGraph g2 = new AdjacencyMatrixGraph(4);
-		
-		g.transposta(g.getGrafo(), g2.getGrafo());
-		
-		System.out.println(g2.toString());
+		g.printSCCs();
 	}
 
 }
